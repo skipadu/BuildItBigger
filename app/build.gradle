@@ -52,6 +52,7 @@ dependencies {
     })
 
     implementation project(':joke-supplier')
+    implementation project(':joke-teller')
 
     testImplementation 'junit:junit:4.12'
 }
