@@ -7,8 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.pihrit.joke_supplier.JokeSupplier;
 import com.pihrit.joke_teller.JokeTellerActivity;
+
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Timber.plant(new Timber.DebugTree());
     }
 
 
@@ -44,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        JokeSupplier jokeSupplier = new JokeSupplier();
-        String joke = jokeSupplier.getJoke();
-
-        Intent jokeTellerIntent = new Intent(this, JokeTellerActivity.class);
-        jokeTellerIntent.putExtra(EXTRA_JOKE, joke);
-        startActivity(jokeTellerIntent);
+        new EndpointsAsyncTask(new JokeResponse() {
+            @Override
+            public void ready(String joke) {
+                Intent jokeTellerIntent = new Intent(MainActivity.this, JokeTellerActivity.class);
+                jokeTellerIntent.putExtra(EXTRA_JOKE, joke);
+                startActivity(jokeTellerIntent);
+            }
+        }).execute();
     }
 
 

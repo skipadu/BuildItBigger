@@ -3,10 +3,16 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.pihrit.joke_supplier.JokeSupplier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 
-/** An endpoint class we are exposing */
+/**
+ * An endpoint class we are exposing
+ */
 @Api(
         name = "myApi",
         version = "v1",
@@ -18,13 +24,30 @@ import javax.inject.Named;
 )
 public class MyEndpoint {
 
-    /** A simple endpoint method that takes a name and says Hi back */
+    private static final Logger log = LoggerFactory.getLogger(MyEndpoint.class);
+
+    /**
+     * A simple endpoint method that takes a name and says Hi back
+     */
     @ApiMethod(name = "sayHi")
     public MyBean sayHi(@Named("name") String name) {
         MyBean response = new MyBean();
         response.setData("Hi, " + name);
 
         return response;
+    }
+
+    @ApiMethod(name = "getJoke")
+    public Joke getJoke() {
+        log.debug("API: getJoke()");
+
+        JokeSupplier jokeSupplier = new JokeSupplier();
+        String jokeText = jokeSupplier.getJoke();
+
+        Joke joke = new Joke();
+        joke.setJoke(jokeText);
+
+        return joke;
     }
 
 }
