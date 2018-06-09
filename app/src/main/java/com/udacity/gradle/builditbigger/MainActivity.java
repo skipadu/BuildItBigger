@@ -2,6 +2,10 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +18,18 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
     private static final String EXTRA_JOKE = "joke";
+
+    @Nullable
+    private CountingIdlingResource mCountingIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public CountingIdlingResource getCountingIdlingResource() {
+        if (mCountingIdlingResource == null) {
+            mCountingIdlingResource = new CountingIdlingResource(MainActivity.class.getSimpleName());
+        }
+        return mCountingIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +63,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        getCountingIdlingResource().increment();
         new EndpointsAsyncTask(new JokeResponse() {
             @Override
             public void ready(String joke) {
+                getCountingIdlingResource().decrement();
                 Intent jokeTellerIntent = new Intent(MainActivity.this, JokeTellerActivity.class);
                 jokeTellerIntent.putExtra(EXTRA_JOKE, joke);
                 startActivity(jokeTellerIntent);
             }
         }).execute();
     }
-
 
 }
