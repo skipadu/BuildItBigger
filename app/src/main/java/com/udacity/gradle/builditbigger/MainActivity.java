@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.pihrit.joke_teller.JokeTellerActivity;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private CountingIdlingResource mCountingIdlingResource;
 
     private CoordinatorLayout mRootCoordinatorLayout;
+    private ProgressBar mLoadingIndicator;
 
     @VisibleForTesting
     @NonNull
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         Timber.plant(new Timber.DebugTree());
         mRootCoordinatorLayout = findViewById(R.id.root_activity_main);
+        mLoadingIndicator = findViewById(R.id.loading_indicator);
     }
 
 
@@ -69,10 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View v) {
         getCountingIdlingResource().increment();
+        setLoadingIndicatorVisible(true);
+
         new EndpointsAsyncTask(new JokeResponse() {
             @Override
             public void success(String joke) {
                 getCountingIdlingResource().decrement();
+                setLoadingIndicatorVisible(false);
                 Intent jokeTellerIntent = new Intent(MainActivity.this, JokeTellerActivity.class);
                 jokeTellerIntent.putExtra(EXTRA_JOKE, joke);
                 startActivity(jokeTellerIntent);
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void failure(String error) {
                 getCountingIdlingResource().decrement();
+                setLoadingIndicatorVisible(false);
 
                 final Snackbar snackbar = Snackbar.make(mRootCoordinatorLayout, error, Snackbar.LENGTH_LONG);
                 snackbar.setAction("OK", new View.OnClickListener() {
@@ -93,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 snackbar.show();
             }
         }).execute();
+    }
+
+    private void setLoadingIndicatorVisible(boolean show) {
+        mLoadingIndicator.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 }

@@ -51,7 +51,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, MyApiResponse> {
     }
 
     @Override
-    protected void onPostExecute(MyApiResponse response) {
+    protected void onPostExecute(final MyApiResponse response) {
         if (response.isFailure()) {
             Timber.d("Telling delegate that this was failure...");
             mDelegate.failure(response.getMessage());
