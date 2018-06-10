@@ -23,3 +23,44 @@ allprojects {
         }
     }
 }
+
+task startAppengine {
+    doFirst {
+        println "appengine starting..."
+    }
+
+    dependsOn ":backend:appengineStart"
+
+    doLast {
+        println "###--- appengine started ---###"
+    }
+}
+
+task runTestsWithGCEOn {
+    group "My own tasks"
+    description "Stops the appengine first to make sure it is not already running. Then starts appengine. Runs connected tests for free and paid. And finally stops the appengine."
+
+    dependsOn = ["startAppengine", ":app:connectedFreeDebugAndroidTest", ":app:connectedPaidDebugAndroidTest"]
+
+    finalizedBy "stopAppengine"
+
+    doFirst {
+        println "Starting to run tests"
+    }
+
+    doLast {
+        "All tests done"
+    }
+}
+
+task stopAppengine {
+    doFirst {
+        println "appengine stopping..."
+    }
+
+    dependsOn ":backend:appengineStop"
+
+    doLast {
+        println "###--- appengine stopped ---###"
+    }
+}
