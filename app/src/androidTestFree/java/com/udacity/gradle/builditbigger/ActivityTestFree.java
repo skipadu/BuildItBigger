@@ -18,7 +18,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class ActivityTest {
+public class ActivityTestFree {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -42,8 +42,13 @@ public class ActivityTest {
      * Tests that AsyncTask is loading the joke and it is shown
      */
     @Test
-    public void showJoke() {
+    public void isJokeShown() {
         onView(withId(R.id.tell_joke_button)).perform(click());
         onView(withId(R.id.tv_joke)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void isAdShown() {
+        onView(withId(R.id.adView)).check(matches(isDisplayed()));
     }
 }
