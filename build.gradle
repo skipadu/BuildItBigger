@@ -36,11 +36,37 @@ task startAppengine {
     }
 }
 
+task runFreeTests {
+    mustRunAfter startAppengine
+    doFirst {
+        println "Starting to run tests for Free..."
+    }
+
+    dependsOn = [":app:connectedFreeDebugAndroidTest", ":app:testFreeDebugUnitTest", ":app:testFreeReleaseUnitTest"]
+
+    doLast {
+        println "Ran all tests for Free."
+    }
+}
+
+task runPaidTests {
+    mustRunAfter startAppengine
+    doFirst {
+        println "Starting to run tests for Paid..."
+    }
+
+    dependsOn = [":app:connectedPaidDebugAndroidTest", ":app:testPaidDebugUnitTest", ":app:testPaidReleaseUnitTest"]
+
+    doLast {
+        println "Ran all tests for Paid."
+    }
+}
+
 task runTestsWithGCEOn {
     group "My own tasks"
     description "Stops the appengine first to make sure it is not already running. Then starts appengine. Runs connected tests for free and paid. And finally stops the appengine."
 
-    dependsOn = ["startAppengine", ":app:connectedFreeDebugAndroidTest", ":app:connectedPaidDebugAndroidTest"]
+    dependsOn = ["startAppengine", "runFreeTests", "runPaidTests"]
 
     finalizedBy "stopAppengine"
 
@@ -49,7 +75,7 @@ task runTestsWithGCEOn {
     }
 
     doLast {
-        "All tests done"
+        println "All tests done"
     }
 }
 
