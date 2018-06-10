@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private CountingIdlingResource mCountingIdlingResource;
 
+    private CoordinatorLayout mRootCoordinatorLayout;
+
     @VisibleForTesting
     @NonNull
     public CountingIdlingResource getCountingIdlingResource() {
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Timber.plant(new Timber.DebugTree());
+        mRootCoordinatorLayout = findViewById(R.id.root_activity_main);
     }
 
 
@@ -62,15 +67,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void tellJoke(View view) {
+    public void tellJoke(View v) {
         getCountingIdlingResource().increment();
         new EndpointsAsyncTask(new JokeResponse() {
             @Override
-            public void ready(String joke) {
+            public void success(String joke) {
                 getCountingIdlingResource().decrement();
                 Intent jokeTellerIntent = new Intent(MainActivity.this, JokeTellerActivity.class);
                 jokeTellerIntent.putExtra(EXTRA_JOKE, joke);
                 startActivity(jokeTellerIntent);
+            }
+
+            @Override
+            public void failure(String error) {
+                getCountingIdlingResource().decrement();
+
+                final Snackbar snackbar = Snackbar.make(mRootCoordinatorLayout, error, Snackbar.LENGTH_LONG);
+                snackbar.setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.setActionTextColor(getResources().getColor(R.color.snackbar_action_error));
+                snackbar.show();
             }
         }).execute();
     }

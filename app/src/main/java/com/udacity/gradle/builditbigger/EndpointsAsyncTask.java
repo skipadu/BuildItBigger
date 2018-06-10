@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import timber.log.Timber;
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, MyApiResponse> {
     private static MyApi mMyApiService;
 
     private JokeResponse mDelegate;
@@ -24,7 +24,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
+    protected MyApiResponse doInBackground(Void... voids) {
         if (mMyApiService == null) {
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                     .setRootUrl("http://10.0.2.2:8080/_ah/api")
@@ -37,18 +37,28 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
             mMyApiService = builder.build();
         }
 
+        MyApiResponse response = new MyApiResponse();
         try {
             Timber.d("Executing API call now...");
-            return mMyApiService.getJoke().execute().getJoke();
+            response.setMessage(mMyApiService.getJoke().execute().getJoke());
+            return response;
         } catch (IOException e) {
             Timber.d(e, "Error while executing async API call");
-            return e.getMessage();
+            response.setFailure(true);
+            response.setMessage("Error while executing async API call");
+            return response;
         }
     }
 
     @Override
-    protected void onPostExecute(String joke) {
-        Timber.d("API call ready. Returning joke...");
-        mDelegate.ready(joke);
+    protected void onPostExecute(MyApiResponse response) {
+        if (response.isFailure()) {
+            Timber.d("Telling delegate that this was failure...");
+            mDelegate.failure(response.getMessage());
+        } else {
+            Timber.d("Telling delegate that this was success!");
+            mDelegate.success(response.getMessage());
+        }
     }
+
 }
