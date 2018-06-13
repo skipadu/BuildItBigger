@@ -19,6 +19,8 @@ import com.udacity.gradle.builditbigger.R;
 import com.udacity.gradle.builditbigger.api.EndpointsAsyncTask;
 import com.udacity.gradle.builditbigger.api.JokeResponse;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
@@ -28,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private CountingIdlingResource mCountingIdlingResource;
 
-    private CoordinatorLayout mRootCoordinatorLayout;
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.root_activity_main)
+    CoordinatorLayout mRootCoordinatorLayout;
+    @BindView(R.id.loading_indicator)
+    ProgressBar mLoadingIndicator;
 
     @VisibleForTesting
     @NonNull
@@ -45,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
         Timber.plant(new Timber.DebugTree());
-        mRootCoordinatorLayout = findViewById(R.id.root_activity_main);
-        mLoadingIndicator = findViewById(R.id.loading_indicator);
     }
 
 

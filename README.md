@@ -29,6 +29,7 @@ In addition to existing libraries that were in the base-project, following libra
 
 * [Espresso](https://developer.android.com/training/testing/espresso/) to test UI
 * [Timber](https://github.com/JakeWharton/timber) for logging
+* [Butter Knife](http://jakewharton.github.io/butterknife/) to get rid of those findViewById-boilerplates
 
 ## Other
 * Icons were created with [Sketch](https://www.sketchapp.com/) and using the [Icon Font](https://github.com/keremciu/sketch-iconfont) plugin on it. Icon is from material-bundle
