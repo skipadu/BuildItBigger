@@ -1,4 +1,4 @@
-package com.pihrit.joke_supplier;
+package com.pihrit.jokesupplier;
 
 import java.util.Random;
 

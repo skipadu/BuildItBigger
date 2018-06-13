@@ -3,7 +3,7 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.pihrit.joke_supplier.JokeSupplier;
+import com.pihrit.jokesupplier.JokeSupplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

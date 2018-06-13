@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.pihrit.joke_teller.JokeTellerActivity;
+import com.pihrit.joketeller.JokeTellerActivity;
 import com.udacity.gradle.builditbigger.R;
 import com.udacity.gradle.builditbigger.api.EndpointsAsyncTask;
 import com.udacity.gradle.builditbigger.api.JokeResponse;

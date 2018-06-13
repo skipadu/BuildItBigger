@@ -1,4 +1,4 @@
-package com.pihrit.joke_teller;
+package com.pihrit.joketeller;
 
 import android.content.Intent;
 import android.os.Bundle;
