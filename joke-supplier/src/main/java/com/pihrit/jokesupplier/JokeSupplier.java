@@ -2,7 +2,7 @@ package com.pihrit.jokesupplier;
 
 import java.util.Random;
 
-public class JokeSupplier {
+public final class JokeSupplier {
 
     public final String allJokes[] = new String[]{
             "Why are astronauts so calm? \n- No pressure in vacuum.",
