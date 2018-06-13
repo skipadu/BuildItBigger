@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.builditbigger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.pihrit.joke_teller.JokeTellerActivity;
+import com.udacity.gradle.builditbigger.R;
+import com.udacity.gradle.builditbigger.api.EndpointsAsyncTask;
+import com.udacity.gradle.builditbigger.api.JokeResponse;
 
 import timber.log.Timber;
 

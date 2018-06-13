@@ -5,6 +5,8 @@ import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.udacity.gradle.builditbigger.activities.MainActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.builditbigger.api;
 
 public interface JokeResponse {
     void success(String joke);
